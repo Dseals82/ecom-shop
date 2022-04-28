@@ -1,10 +1,4 @@
-import Categories from './components/categories/categories.component';
-import './categories.styles.scss';
-
-
-const App = () => {
-
-  const categories = [
+[
     {
       "id": 1,
       "title": "hats",
@@ -31,9 +25,3 @@ const App = () => {
       "imageUrl": "https://i.ibb.co/R70vBrQ/men.png"
     }
   ]
-  return (
-    <Categories categories={categories}/>
-  );
-}
-
-export default App;
