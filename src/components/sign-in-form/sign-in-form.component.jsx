@@ -3,6 +3,7 @@ import './sign-in-form.styles.scss';
 import { signInWithGooglePopup, createUserDocumentFromAuth, signInAuthUserWithEmailAndPassword } from '../../utils/firebase.utils';
 import FormInput from '../form-input/form-input.component';
 import Button from '../button/button.component';
+// import { UserContext } from '../../context/user.context';
 
 const defaultFormFields = {
     email: '',
@@ -13,14 +14,17 @@ function SignInForm() {
 
     const [formFields, setFormFields] = useState(defaultFormFields);
     const {email, password} = formFields;
-
+    //create a context passing in UserContext so that you have access to the init val and setter func
+    //destructure the setter func
+    // const { setCurrentUser} = useContext(UserContext);
     const resetFormFields = () => {
       setFormFields(defaultFormFields)
     };
 
     const signInWithGoogle = async () => {
-        const { user } = await signInWithGooglePopup();
-        await createUserDocumentFromAuth(user); 
+        await signInWithGooglePopup();
+        // setCurrentUser(user);
+             
     };
 
     const handleSubmit = async (e) => {
@@ -28,8 +32,9 @@ function SignInForm() {
       e.preventDefault();
 
       try {
-        const response = await signInAuthUserWithEmailAndPassword(email, password);
-        console.log(response)
+        await signInAuthUserWithEmailAndPassword(email, password);
+        //set Current user so that the userContext has access to the data
+        // setCurrentUser(user);
         resetFormFields();
       } catch (error) {
 
@@ -60,7 +65,7 @@ function SignInForm() {
       <span>Sign in with your email and password</span>
       <form onSubmit={handleSubmit}>
         <FormInput label='Email' required onChange={handleChange} name='email' value={email} />
-        <FormInput label='Password' required onChange={handleChange} name='password' value={password} />
+        <FormInput label='Password' type='password' required onChange={handleChange} name='password' value={password} />
         <div className='buttons-container'>
           <Button type='submit'>Sign In</Button>
           <Button type='button' buttonType='google' onClick={signInWithGoogle}>Google Sign In</Button>
