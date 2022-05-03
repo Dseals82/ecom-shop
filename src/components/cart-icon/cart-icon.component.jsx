@@ -5,11 +5,11 @@ import { useContext } from 'react';
 import { CartContext } from '../../context/cart.context';
 
 const CartIcon = ({onClick}) => {
-  const { itemCount, setItemCount } = useContext(CartContext)
+  const { cartCount } = useContext(CartContext)
   return (
     <div onClick={onClick} className='cart-icon-container'>
       <ShoppingIcon className='shopping-icon' />
-      <span className='item-count'>{itemCount}</span>
+      <span className='item-count'>{cartCount}</span>
     </div>
   )
 }
