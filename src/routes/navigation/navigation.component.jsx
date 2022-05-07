@@ -19,7 +19,6 @@ const Navigation = () => {
 
   const handleClick = () => {
     setToggleCart(!toggleCart)
-    console.log('I am toggle: ',toggleCart)
   }
 
   return (

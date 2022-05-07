@@ -23,7 +23,6 @@ export const UserProvider = ({children}) => {
             }
             //will either be null or authenticated object
             setCurrentUser(user);
-            console.log('in context:',user)
         });
         return unsubscribe
     },[])
