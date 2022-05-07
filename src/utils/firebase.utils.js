@@ -20,6 +20,7 @@ const firebaseConfig = {
     appId: "1:978695717292:web:7ec863e5851419b26d3a09"
   };
 //allows you to perform CRUD actions
+// eslint-disable-next-line
 const firebaseApp = initializeApp(firebaseConfig);
 
 //init provider

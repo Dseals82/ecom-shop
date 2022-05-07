@@ -1,5 +1,5 @@
-import './navigation.styles.scss';
-import { Outlet, Link } from 'react-router-dom';
+// import './navigation.styles.scss';
+import { Outlet, } from 'react-router-dom';
 import { Fragment, useContext } from 'react';
 import { ReactComponent as Logo } from '../../assets/img/crown.svg';
 import CartIcon from '../../components/cart-icon/cart-icon.component';
@@ -7,6 +7,7 @@ import CartDropdown from '../../components/cart-dropdown/cart-dropdown.component
 import { UserContext } from '../../context/user.context';
 import { signOutUser } from '../../utils/firebase.utils';
 import { CartContext } from '../../context/cart.context';
+import { NavigationContainer, LogoContainer, NavLink, NavLinksContainer } from './navigation.styles';
 
 
 const Navigation = () => {
@@ -23,28 +24,28 @@ const Navigation = () => {
 
   return (
     <Fragment>
-      <nav className='navigation'>
-        <Link className='logo-container' to="/">
+      <NavigationContainer>
+        <LogoContainer to="/">
             <Logo />
-        </Link>
-        <div className='nav-links-container'>
-            <Link className="nav-link" to='shop'>SHOP</Link>
-            <Link className="nav-link" to='shop'>SHOP</Link>
+        </LogoContainer>
+        <NavLinksContainer>
+            <NavLink to='shop'>SHOP</NavLink>
+            <NavLink to='shop'>SHOP</NavLink>
             {
               currentUser? (
-                <span className="nav-link" onClick={signOutUser}>{" "}SIGN OUT{" "}</span>
+                <NavLink as='span' onClick={signOutUser}>{" "}SIGN OUT{" "}</NavLink>
               ) :
               (
-                <Link className="nav-link" to='auth'>SIGN IN</Link>
+                <NavLink to='auth'>SIGN IN</NavLink>
               )
             }
       
             <CartIcon onClick={handleClick} />
-        </div>
+        </NavLinksContainer>
 
-        {toggleCart && <CartDropdown /> }
+          {toggleCart && <CartDropdown /> }
         
-      </nav>
+      </NavigationContainer>
       <Outlet />
     </Fragment>
   )

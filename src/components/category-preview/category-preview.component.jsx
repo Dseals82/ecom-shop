@@ -1,17 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './category-preview.styles.scss';
+import {LinkTitle, CategoryPreviewContainer, Preview} from  './category-preview.styles.jsx';
 import ProductCard from '../product-card/product-card.component';
 
 function CategoryPreview({title, products}) {
   return (
-    <div className='category-preview-container'>
+    <CategoryPreviewContainer>
       <h2>
       <Link to={title}>
-        <span className='title'>{title.toUpperCase()}</span>
+        <LinkTitle>{title.toUpperCase()}</LinkTitle>
       </Link>
       </h2>
-      <div className='preview'>
+      <Preview>
         {
             products
                 .filter((_, idx) => idx < 4 )
@@ -20,8 +20,8 @@ function CategoryPreview({title, products}) {
                 ))
 
         }
-      </div>
-    </div>
+      </Preview>
+    </CategoryPreviewContainer>
   )
 };
 
