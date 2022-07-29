@@ -1,4 +1,6 @@
-import { createContext, useEffect, useState, } from "react";
+import { createContext, useEffect, useState, useReducer} from "react";
+
+
 //helper func that takes in cartItems array and product to be added
 const addCartItem = (cartItems, productToAdd) => {
     //find if cartItems contains parductToAdd
@@ -56,10 +58,73 @@ const deleteCartItemButton = (cartItems, itemToDelete) => {
 });
 
  export const CartProvider = ({children}) => {
-    const [cartItems, setCartItems] = useState([]);
-    const [toggleCart, setToggleCart] = useState(false);
-    const [cartCount, setCartCount] = useState(0);
-    const [cartTotal, setCartTotal] = useState(0);
+    // const [cartItems, setCartItems] = useState([]);
+    // const [toggleCart, setToggleCart] = useState(false);
+    // const [cartCount, setCartCount] = useState(0);
+    // const [cartTotal, setCartTotal] = useState(0);
+
+
+    const CART_ACTION_TYPES = {
+        SET_CART_ITEMS: 'SET_CART_ITEMS',
+        SET_TOGGLE_CART: 'SET_TOGGLE_CART',
+        SET_CART_COUNT: 'SET_CART_COUNT',
+        SET_CART_TOTAL: 'SET_CART_TOTAL',
+    }
+
+    const INITIAL_STATE = {
+        cartItems: [],
+        toggleCart: false,
+        cartCount: 0,
+        cartTotal: 0,
+    }
+    
+    const cartReducer = (state, action) => {
+        const {type,payload} = action;
+
+        switch(type){
+            case CART_ACTION_TYPES.SET_CART_ITEMS:
+                return {
+                    ...state,
+                    cartItems: payload
+                }
+            case CART_ACTION_TYPES.SET_TOGGLE_CART:
+                return {
+                    ...state,
+                    toggleCart:!state.toggleCart
+                }
+            case CART_ACTION_TYPES.SET_CART_COUNT:
+                return {
+                    ...state,
+                    cartCount: payload
+                }
+            case CART_ACTION_TYPES.SET_CART_TOTAL:
+                return {
+                    ...state,
+                    cartTotal: payload
+                }
+
+            default:
+                throw new Error(`Unhandled type ${type} in the cart Reducer `)
+        }
+    }
+
+    const [state, dispatch] = useReducer(cartReducer, INITIAL_STATE);
+    const { cartItems, toggleCart, cartCount, cartTotal} = state;
+    console.log('state', state)
+    
+
+    const setCartItems = (cartItems) => {
+        dispatch({type: CART_ACTION_TYPES.SET_CART_ITEMS, payload: cartItems})
+    }
+    const setCartTotal = (newCartTotal) => {
+        dispatch({type: CART_ACTION_TYPES.SET_CART_TOTAL, payload: newCartTotal})
+    }
+    const setToggleCart = () => {
+        dispatch({type: CART_ACTION_TYPES.SET_TOGGLE_CART})
+    }
+    const setCartCount = (newCartCount) => {
+        dispatch({type: CART_ACTION_TYPES.SET_CART_COUNT, payload: newCartCount})
+    }
 
     useEffect(() => {
         const newCartCount = cartItems.reduce((total, cartItem) => total + cartItem.quantity, 0);
