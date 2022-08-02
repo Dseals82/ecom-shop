@@ -1,4 +1,5 @@
-import { createContext, useEffect, useState, useReducer} from "react";
+import { createContext, useReducer} from "react";
+import { createAction } from "../utils/reducer/reducer.utils";
 
 
 //helper func that takes in cartItems array and product to be added
@@ -63,13 +64,15 @@ const deleteCartItemButton = (cartItems, itemToDelete) => {
     // const [cartCount, setCartCount] = useState(0);
     // const [cartTotal, setCartTotal] = useState(0);
 
-
-    const CART_ACTION_TYPES = {
+    
+   const CART_ACTION_TYPES = {
         SET_CART_ITEMS: 'SET_CART_ITEMS',
         SET_TOGGLE_CART: 'SET_TOGGLE_CART',
         SET_CART_COUNT: 'SET_CART_COUNT',
         SET_CART_TOTAL: 'SET_CART_TOTAL',
     }
+
+    //reducers only hold readlable values
 
     const INITIAL_STATE = {
         cartItems: [],
@@ -78,6 +81,7 @@ const deleteCartItemButton = (cartItems, itemToDelete) => {
         cartTotal: 0,
     }
     
+    //It is best practice to never hold any business logic in your reducer function.  It should only set the payload.
     const cartReducer = (state, action) => {
         const {type,payload} = action;
 
@@ -85,24 +89,14 @@ const deleteCartItemButton = (cartItems, itemToDelete) => {
             case CART_ACTION_TYPES.SET_CART_ITEMS:
                 return {
                     ...state,
-                    cartItems: payload
+                    ...payload
                 }
             case CART_ACTION_TYPES.SET_TOGGLE_CART:
                 return {
                     ...state,
-                    toggleCart:!state.toggleCart
+                    toggleCart: payload
                 }
-            case CART_ACTION_TYPES.SET_CART_COUNT:
-                return {
-                    ...state,
-                    cartCount: payload
-                }
-            case CART_ACTION_TYPES.SET_CART_TOTAL:
-                return {
-                    ...state,
-                    cartTotal: payload
-                }
-
+            
             default:
                 throw new Error(`Unhandled type ${type} in the cart Reducer `)
         }
@@ -110,44 +104,43 @@ const deleteCartItemButton = (cartItems, itemToDelete) => {
 
     const [state, dispatch] = useReducer(cartReducer, INITIAL_STATE);
     const { cartItems, toggleCart, cartCount, cartTotal} = state;
-    console.log('state', state)
-    
 
-    const setCartItems = (cartItems) => {
-        dispatch({type: CART_ACTION_TYPES.SET_CART_ITEMS, payload: cartItems})
-    }
-    const setCartTotal = (newCartTotal) => {
-        dispatch({type: CART_ACTION_TYPES.SET_CART_TOTAL, payload: newCartTotal})
-    }
-    const setToggleCart = () => {
-        dispatch({type: CART_ACTION_TYPES.SET_TOGGLE_CART})
-    }
-    const setCartCount = (newCartCount) => {
-        dispatch({type: CART_ACTION_TYPES.SET_CART_COUNT, payload: newCartCount})
+    const updateCartItemsReducer = (newCartItems) =>{
+        const newCartCount = newCartItems.reduce((total, cartItem) => total + cartItem.quantity, 0);
+        const newCartTotal = newCartItems.reduce((total, cartItem) => total + cartItem.quantity * cartItem.price, 0);
+        dispatch(createAction(CART_ACTION_TYPES.SET_CART_ITEMS, {cartItems: newCartItems, cartCount: newCartCount, cartTotal: newCartTotal}))
     }
 
-    useEffect(() => {
-        const newCartCount = cartItems.reduce((total, cartItem) => total + cartItem.quantity, 0);
-        setCartCount(newCartCount);
-    },[cartItems]);
-    useEffect(() => {
-        const newCartTotal = cartItems.reduce((total, cartItem) => total + cartItem.quantity * cartItem.price, 0);
-        setCartTotal(newCartTotal);
-    },[cartItems]);
+    // useEffect(() => {
+    //     const newCartCount = cartItems.reduce((total, cartItem) => total + cartItem.quantity, 0);
+    //     setCartCount(newCartCount);
+    // },[cartItems]);
+    // useEffect(() => {
+    //     const newCartTotal = cartItems.reduce((total, cartItem) => total + cartItem.quantity * cartItem.price, 0);
+    //     setCartTotal(newCartTotal);
+    // },[cartItems]);
 
     //triggers whenever user clicks on add to cart button
     //we will recieve the particular product to add
     const addItemToCart = (productToAdd) => {
-        setCartItems(addCartItem(cartItems, productToAdd))
+        const newCartItems = addCartItem(cartItems, productToAdd);
+        updateCartItemsReducer(newCartItems);
      }
     const removeItemFromCart = (productToDelete) => {
-        setCartItems(deleteCartItem(cartItems, productToDelete))
+        const newCartItems = deleteCartItem(cartItems, productToDelete);
+        updateCartItemsReducer(newCartItems);
      }
     
     const deleteItemFromCartButton = (productToDelete) => {
-        setCartItems(deleteCartItemButton(cartItems, productToDelete))
+        const newCartItems = deleteCartItemButton(cartItems, productToDelete);
+        updateCartItemsReducer(newCartItems);
     }
-     const value = {cartItems, setCartItems, toggleCart, setToggleCart, addItemToCart, removeItemFromCart, cartCount, deleteItemFromCartButton, cartTotal};
+
+    const setToggleCart = (bool) => {
+        dispatch(createAction(CART_ACTION_TYPES.SET_TOGGLE_CART, bool))
+    }
+
+     const value = {cartItems, toggleCart, setToggleCart, addItemToCart, removeItemFromCart, cartCount, deleteItemFromCartButton, cartTotal};
     
     
     return (

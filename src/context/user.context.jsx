@@ -14,6 +14,11 @@ export const USER_ACTION_TYPES = {
     SET_CURRENT_USER: 'SET_CURRENT_USER'
 }
 
+//initial state to be passed in reducer
+const INITIAL_STATE = {
+    currentUser: null
+}
+
 //user Reducer
 const userReducer = (state, action) => {
     const {type,payload} = action;
@@ -37,15 +42,10 @@ const userReducer = (state, action) => {
 export const UserProvider = ({children}) => {
     //const [currentUser, setCurrentUser] = useState(null);
 
-    //initial state to be passed in reducer
-    const INITIAL_STATE = {
-        currentUser: null
-    }
-
     //this returns the state object or current values being stored by reducer and the dispatch func
     //dispatch func is a func that works by whenever its called it takes the action and pass it int user reducer 
-    const [state, dispatch ] = useReducer(userReducer, INITIAL_STATE);
-    const { currentUser } = state;
+    const [{currentUser}, dispatch ] = useReducer(userReducer, INITIAL_STATE);
+    
 
     const setCurrentUser = (user) => {
         dispatch({type: USER_ACTION_TYPES.SET_CURRENT_USER, payload: user});
@@ -69,8 +69,3 @@ export const UserProvider = ({children}) => {
 };
 
 
-// const userReducer = (state, action)=>{
-//     return {
-//         currentUser:null
-//     }
-// }
