@@ -10,6 +10,7 @@ import { onAuthStateChangedListener, createUserDocumentFromAuth } from "./utils/
 import { setCurrentUser } from './store/user/user.action';
 
 
+
 const App = () => {
   //dispatch will not change, but we add to dependency array to prevent lint error
   const dispatch = useDispatch();
@@ -25,6 +26,8 @@ const App = () => {
     });
     return unsubscribe
 },[dispatch])
+
+ 
 
   return (
     <Routes>
