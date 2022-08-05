@@ -7,23 +7,27 @@ import CartIcon from '../../components/cart-icon/cart-icon.component';
 import CartDropdown from '../../components/cart-dropdown/cart-dropdown.component';
 //import { UserContext } from '../../context/user.context';
 import { signOutUser } from '../../utils/firebase.utils';
-import { CartContext } from '../../context/cart.context';
+//import { CartContext } from '../../context/cart.context';
 import { selectCurrentUser } from '../../store/user/user.selector';
 import { NavigationContainer, LogoContainer, NavLink, NavLinksContainer } from './navigation.styles';
-
-
+import { useDispatch } from 'react-redux';
+import { selectToggleCart } from '../../store/cart/cart.selector';
+import { setToggleCart } from '../../store/cart/cart.action'
 const Navigation = () => {
   //import useContex then pass in UserContext
   //Desctructure object for the user value
   //useContext re renders component
   //const { currentUser, } = useContext(UserContext);
+  const dispatch = useDispatch()
+  
 
+  const toggleCart = useSelector(selectToggleCart)
   const currentUser = useSelector(selectCurrentUser)
   
-  const { toggleCart, setToggleCart,} = useContext(CartContext)
+  //const { toggleCart, setToggleCart,} = useContext(CartContext)
 
   const handleClick = () => {
-    setToggleCart(!toggleCart)
+   dispatch(setToggleCart(!toggleCart))
   }
 
   return (
