@@ -13,6 +13,7 @@ import { NavigationContainer, LogoContainer, NavLink, NavLinksContainer } from '
 import { useDispatch } from 'react-redux';
 import { selectToggleCart } from '../../store/cart/cart.selector';
 import { setToggleCart } from '../../store/cart/cart.action'
+
 const Navigation = () => {
   //import useContex then pass in UserContext
   //Desctructure object for the user value
