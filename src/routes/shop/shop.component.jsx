@@ -9,9 +9,10 @@ import { useDispatch } from 'react-redux';
 const  Shop = () => {
   const dispatch = useDispatch();
 
+  //maybe remove dispatch from dependency array?
   useEffect(() => {
         dispatch(fetchCategoriesAsync())
-  },[]);
+  },[dispatch]);
 
   return (
     <Routes>
