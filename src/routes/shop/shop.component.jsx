@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import CategoriesPreview from '../categories-preview/categories-preview.component';
 import Category from '../category/category.component';
-import { fetchCategoriesAsync } from '../../store/categories/categories.action';
+import { fetchCategoriesStart } from '../../store/categories/categories.action';
 import { useDispatch } from 'react-redux';
 
 
@@ -11,7 +11,7 @@ const  Shop = () => {
 
   //maybe remove dispatch from dependency array?
   useEffect(() => {
-        dispatch(fetchCategoriesAsync())
+        dispatch(fetchCategoriesStart())
   },[dispatch]);
 
   return (
