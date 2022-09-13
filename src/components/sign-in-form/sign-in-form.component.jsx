@@ -4,6 +4,8 @@ import { signInWithGooglePopup, signInAuthUserWithEmailAndPassword } from '../..
 import FormInput from '../form-input/form-input.component';
 import Button, {BUTTON_TYPE_CLASSES} from '../button/button.component';
 // import { UserContext } from '../../context/user.context';
+import { useDispatch } from 'react-redux';
+import { googleSignInStart, emailSignInStart } from '../../store/user/user.action';
 
 const defaultFormFields = {
     email: '',
@@ -11,20 +13,15 @@ const defaultFormFields = {
 };
 
 function SignInForm() {
-
+    const dispatch = useDispatch();
     const [formFields, setFormFields] = useState(defaultFormFields);
     const {email, password} = formFields;
-    //create a context passing in UserContext so that you have access to the init val and setter func
-    //destructure the setter func
-    // const { setCurrentUser} = useContext(UserContext);
     const resetFormFields = () => {
       setFormFields(defaultFormFields)
     };
 
     const signInWithGoogle = async () => {
-        await signInWithGooglePopup();
-        // setCurrentUser(user);
-             
+        dispatch(googleSignInStart())    
     };
 
     const handleSubmit = async (e) => {
@@ -32,9 +29,7 @@ function SignInForm() {
       e.preventDefault();
 
       try {
-        await signInAuthUserWithEmailAndPassword(email, password);
-        //set Current user so that the userContext has access to the data
-        // setCurrentUser(user);
+        dispatch(emailSignInStart)
         resetFormFields();
       } catch (error) {
 
