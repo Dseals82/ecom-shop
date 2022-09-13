@@ -86,9 +86,7 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInformation
         }
     }
     
-
-    //return user Doc Ref
-    return userDocRef;
+    return userSnapshot;
 };
 
 //create authenticated user inside firebase auth tab /does not exist in doc yet
