@@ -12,19 +12,20 @@ import { selectCurrentUser } from '../../store/user/user.selector';
 import { NavigationContainer, LogoContainer, NavLink, NavLinksContainer } from './navigation.styles';
 import { useDispatch } from 'react-redux';
 import { selectToggleCart } from '../../store/cart/cart.selector';
-import { setToggleCart } from '../../store/cart/cart.action'
+import { setToggleCart } from '../../store/cart/cart.action';
+import { signOutStart} from '../../store/user/user.action';
 
 const Navigation = () => {
   //import useContex then pass in UserContext
   //Desctructure object for the user value
   //useContext re renders component
   //const { currentUser, } = useContext(UserContext);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   
 
   const toggleCart = useSelector(selectToggleCart)
   const currentUser = useSelector(selectCurrentUser)
-  
+  const signOutUser = () => dispatch(signOutStart());
   //const { toggleCart, setToggleCart,} = useContext(CartContext)
 
   const handleClick = () => {
