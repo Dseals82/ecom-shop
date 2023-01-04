@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Button from '../button/button.styles';
+import { BaseButton } from "../button/button.styles";
 
 export const PaymentFormContainer = styled.div`
   height: 300px;
@@ -14,7 +14,7 @@ export const FormContainer = styled.div`
   min-width: 500px;
 `;
 
-export const PaymentButton = styled(Button)`
+export const PaymentButton = styled(BaseButton)`
   margin-left: auto;
   margin-top: 30px;
 `;
