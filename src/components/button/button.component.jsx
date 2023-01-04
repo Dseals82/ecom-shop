@@ -1,5 +1,5 @@
 import React from 'react';
-import {BaseButton, GoogleSignInButton, InvertedButton, CheckOutButton} from  './button.styles.jsx';
+import {BaseButton, GoogleSignInButton, InvertedButton, CheckOutButton, ButtonSpinner} from  './button.styles.jsx';
 
 // 3 types of button
 // default
@@ -26,11 +26,11 @@ const getButton = (buttonType = BUTTON_TYPE_CLASSES.base) => (
 )
 
 
-const Button = ({children, buttonType, ...otherButtonProps}) => {
+const Button = ({children, buttonType, isLoading, ...otherButtonProps}) => {
   const CustomButtonToRender = getButton(buttonType);
   return (
-    <CustomButtonToRender {...otherButtonProps}>
-      {children}
+    <CustomButtonToRender disabled={isLoading} {...otherButtonProps}>
+      { isLoading ? <ButtonSpinner/> : children}
     </CustomButtonToRender>
   )
 }
